@@ -41,6 +41,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With']
 }));
 
+
 app.use(cookieParser());
 const fs = require('fs');
 app.use((req, res, next) => {
