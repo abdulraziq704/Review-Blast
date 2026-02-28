@@ -553,3 +553,4 @@
 2026-02-27T14:49:12.688Z - GET /api/contacts - Cookies: {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWYxNThlNDcwMTM3M2UyYmIxOGEzMyIsImlhdCI6MTc3MjIwMjYyMSwiZXhwIjoxNzc0Nzk0NjIxfQ.IPDUUmhqhT78PSXGk8Pqz7Yk4zxVhrTyIVX7eE5GvaY"}
 2026-02-27T14:49:13.045Z - GET /api/auth/me - Cookies: {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWYxNThlNDcwMTM3M2UyYmIxOGEzMyIsImlhdCI6MTc3MjIwMjYyMSwiZXhwIjoxNzc0Nzk0NjIxfQ.IPDUUmhqhT78PSXGk8Pqz7Yk4zxVhrTyIVX7eE5GvaY"}
 2026-02-27T14:52:40.029Z - POST /api/auth/logout - Cookies: {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OWYxNThlNDcwMTM3M2UyYmIxOGEzMyIsImlhdCI6MTc3MjIwMjYyMSwiZXhwIjoxNzc0Nzk0NjIxfQ.IPDUUmhqhT78PSXGk8Pqz7Yk4zxVhrTyIVX7eE5GvaY"}
+2026-02-28T11:01:34.307Z - GET /api/auth/me - Cookies: {"g_state":"{\"i_l\":0,\"i_ll\":1771579855181,\"i_e\":{\"enable_itp_optimization\":0},\"i_b\":\"OnQFa96kzb4qvT8smnYmu59OHrxxXBF3NbEYJZXILEw\"}"}

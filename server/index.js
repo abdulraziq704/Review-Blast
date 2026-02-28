@@ -17,7 +17,8 @@ connectDB();
 const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    'https://loan-nonfanatical-overdiffusely.ngrok-free.dev' // Add your ngrok link here!
+    'https://loan-nonfanatical-overdiffusely.ngrok-free.dev',
+    'https://reviewblast.vercel.app/'
 ];
 
 app.use(cors({

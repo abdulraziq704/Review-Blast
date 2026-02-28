@@ -2,7 +2,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: '/api',
+    // Use the Vite environment variable, fallback to local for development
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
     withCredentials: true
 });
 
@@ -15,6 +16,4 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-
 export default api;
-
