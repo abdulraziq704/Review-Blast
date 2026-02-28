@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect, useContext } from 'react';
 import api from '../utils/api';
 import AuthContext from '../context/AuthContext';
@@ -20,7 +21,7 @@ const AdminDashboard = () => {
         try {
             const { data } = await api.get('/admin/users');
             setUsers(data);
-        } catch (error) {
+        } catch {
             toast.error('Failed to fetch users');
         } finally {
             setLoading(false);
@@ -32,7 +33,7 @@ const AdminDashboard = () => {
             await api.put(`/admin/users/${userId}`, { paymentStatus: status });
             toast.success('Payment status updated');
             fetchUsers();
-        } catch (error) {
+        } catch {
             toast.error('Update failed');
         }
     };
@@ -42,7 +43,7 @@ const AdminDashboard = () => {
             await api.put(`/admin/users/${userId}`, { plan });
             toast.success(`Plan updated to ${plan}`);
             fetchUsers();
-        } catch (error) {
+        } catch {
             toast.error('Plan update failed');
         }
     };
@@ -52,7 +53,7 @@ const AdminDashboard = () => {
             await api.put(`/admin/users/${userId}`, { billingCycle });
             toast.success(`Cycle updated to ${billingCycle}`);
             fetchUsers();
-        } catch (error) {
+        } catch {
             toast.error('Cycle update failed');
         }
     };

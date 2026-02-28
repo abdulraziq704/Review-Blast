@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import PricingSection from '../components/PricingSection';
 import { motion } from 'framer-motion';

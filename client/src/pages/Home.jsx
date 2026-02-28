@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -64,7 +65,7 @@ const Home = () => {
                     className="absolute top-1/4 left-10 hidden xl:block opacity-20"
                 >
                     <MessageSquare size={120} className="text-indigo-500" />
-                 </motion.div>
+                </motion.div>
                 <motion.div
                     animate={{ y: [0, 20, 0] }}
                     transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}

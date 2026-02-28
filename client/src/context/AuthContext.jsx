@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
             localStorage.removeItem('userInfo');
             setUser(null);
             toast.info('Logged out');
-        } catch (error) {
+        } catch {
             toast.error('Logout failed');
         }
     };

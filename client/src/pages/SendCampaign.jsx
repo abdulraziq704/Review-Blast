@@ -6,7 +6,6 @@ import AuthContext from '../context/AuthContext';
 const SendCampaign = () => {
     const { user } = useContext(AuthContext);
     const [contacts, setContacts] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [sending, setSending] = useState(false);
     const [results, setResults] = useState(null);
 
@@ -163,8 +162,8 @@ const SendCampaign = () => {
                             onClick={handleSend}
                             disabled={sending || pendingCount === 0 || user?.paymentStatus === 'pending'}
                             className={`w-full py-4 rounded-xl font-bold text-lg transition shadow-lg active:scale-95 ${sending || pendingCount === 0 || user?.paymentStatus === 'pending'
-                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-none'
-                                    : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-none'
+                                : 'bg-indigo-600 text-white hover:bg-indigo-700'
                                 }`}
                         >
                             {sending ? 'Sending...' : user?.paymentStatus === 'pending' ? 'Payment Required' : `RUN CAMPAIGN (Send to ${pendingCount} Pending)`}

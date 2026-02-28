@@ -6,7 +6,6 @@ import { FaEdit, FaTrash } from 'react-icons/fa'; // Install react-icons
 
 const Contacts = () => {
     const [contacts, setContacts] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [selectedIds, setSelectedIds] = useState([]);
     const [editingContact, setEditingContact] = useState(null);
     const [newContact, setNewContact] = useState({ name: '', phone: '' });
@@ -17,10 +16,10 @@ const Contacts = () => {
         try {
             const { data } = await api.get('/contacts');
             setContacts(data);
-        } catch (error) {
+        } catch {
             toast.error('Failed to fetch contacts');
         } finally {
-            setLoading(false);
+            // Loading state removed
         }
     };
 
@@ -47,7 +46,7 @@ const Contacts = () => {
             await api.delete(`/contacts/${id}`);
             toast.success('Contact removed');
             fetchContacts();
-        } catch (error) {
+        } catch {
             toast.error('Failed to delete contact');
         }
     };
@@ -60,7 +59,7 @@ const Contacts = () => {
             toast.success('Contacts deleted successfully');
             setSelectedIds([]);
             fetchContacts();
-        } catch (error) {
+        } catch {
             toast.error('Bulk delete failed');
         }
     };
@@ -84,7 +83,7 @@ const Contacts = () => {
             toast.success('Contact updated');
             setEditingContact(null);
             fetchContacts();
-        } catch (error) {
+        } catch {
             toast.error('Update failed');
         }
     };

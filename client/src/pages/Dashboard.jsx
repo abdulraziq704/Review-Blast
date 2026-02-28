@@ -38,12 +38,12 @@ const Dashboard = () => {
                         setUser(prev => ({ ...prev, ...userData }));
                     }
                 }
-            } catch (error) {
-                console.error('Initialization error:', error);
+            } catch (err) {
+                console.error('Initialization error:', err);
             }
         };
         initialization();
-    }, []); // Only runs once on mount
+    }, [setUser]); // Added setUser to dependency array
 
     const handleSaveLink = async () => {
         if (loading) return;
@@ -57,7 +57,7 @@ const Dashboard = () => {
             }
 
             toast.success('Google Review Link saved!');
-        } catch (error) {
+        } catch {
             // This will only trigger now if the actual API fails
             toast.error('Failed to save link.');
         } finally {

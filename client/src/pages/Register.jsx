@@ -1,33 +1,23 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import { toast } from 'react-toastify';
 
 const Register = () => {
-    const { register, error, clearErrors, isAuthenticated } = useContext(AuthContext);
+    const { register } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const initialPlan = params.get('plan') || 'startup';
+    const initialCycle = params.get('cycle') || 'monthly';
 
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
         businessName: '',
-        plan: 'startup',
+        plan: initialPlan,
     });
-    const [billingCycle, setBillingCycle] = useState('monthly');
-
-    useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const planParam = params.get('plan');
-        const cycleParam = params.get('cycle');
-        if (planParam) {
-            setFormData(prev => ({ ...prev, plan: planParam }));
-        }
-        if (cycleParam) {
-            setBillingCycle(cycleParam);
-        }
-    }, [location]);
+    const [billingCycle, setBillingCycle] = useState(initialCycle);
 
     const plans = [
         { id: 'startup', name: 'Startup', monthlyPrice: 1500, yearlyPrice: 15000, contacts: 300, color: 'indigo' },
