@@ -32,32 +32,13 @@ const allowedOrigins = [
     'https://reviewblast-git-main-abdullraziqs-projects.vercel.app',
     'https://reviewblast-of4bpum5v-abdullraziqs-projects.vercel.app',
     'https://reviewblast.up.railway.app'
-    // In case the user adds more vercel domains later
-   
 ];
 
 app.use(cors({
-    origin: function (origin, callback) {
-        // allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-
-        const isAllowed = allowedOrigins.some(allowed => {
-            if (allowed instanceof RegExp) {
-                return allowed.test(origin);
-            }
-            return allowed === origin;
-        });
-
-        if (isAllowed) {
-            callback(null, true);
-        } else {
-            console.log("Blocked by CORS:", origin);
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With']
 }));
 
 app.use(cookieParser());
