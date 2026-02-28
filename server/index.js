@@ -14,6 +14,16 @@ app.set("trust proxy", 1);
 // Connect to Database
 connectDB();
 
+// Environment Variable Validation
+const requiredEnv = ['MONGO_URI', 'JWT_SECRET'];
+requiredEnv.forEach(env => {
+    if (!process.env[env]) {
+        console.error(`❌ CRITICAL ERROR: ${env} is missing in environment variables!`);
+    } else {
+        console.log(`✅ ${env} is set.`);
+    }
+});
+
 const allowedOrigins = [
     'https://reviewblast.vercel.app',
     'http://localhost:5173',
@@ -21,6 +31,8 @@ const allowedOrigins = [
     'https://loan-nonfanatical-overdiffusely.ngrok-free.dev',
     'https://reviewblast-git-main-abdullraziqs-projects.vercel.app',
     'https://reviewblast-of4bpum5v-abdullraziqs-projects.vercel.app',
+    // In case the user adds more vercel domains later
+    /\.vercel\.app$/
 ];
 
 app.use(cors({

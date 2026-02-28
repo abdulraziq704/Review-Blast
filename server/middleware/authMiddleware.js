@@ -1,32 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// const protect = async (req, res, next) => {
-//     let token = req.cookies.token;
-
-//     if (token) {
-//         try {
-//             // Verify token
-//             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//             console.log('Protect Middleware - Token verified for user:', decoded.id);
-
-//             // Get user from the token
-//             req.user = await User.findById(decoded.id).select('-password');
-//             if (!req.user) {
-//                 console.log('Protect Middleware - User not found in DB');
-//             }
-
-//             next();
-//         } catch (error) {
-//             console.error('Protect Middleware - JWT Error:', error.message);
-//             res.status(401).json({ message: 'Not authorized, token failed' });
-//         }
-//     } else {
-//         console.log('Protect Middleware - No token found in cookies');
-//         console.log('Available Request Cookies:', req.cookies);
-//         res.status(401).json({ message: 'Not authorized, no token' });
-//     }
-// };
 
 
 const protect = async (req, res, next) => {
@@ -46,17 +20,22 @@ const protect = async (req, res, next) => {
     }
 
     try {
+        if (!process.env.JWT_SECRET) {
+            console.error('❌ AUTH ERROR: JWT_SECRET is not defined in server environment!');
+            return res.status(500).json({ message: 'Server configuration error' });
+        }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = await User.findById(decoded.id).select('-password');
 
         if (!req.user) {
+            console.error(`❌ AUTH ERROR: User not found in database for ID: ${decoded.id}`);
             return res.status(401).json({ message: 'Not authorized, user not found' });
         }
 
         return next();
     } catch (error) {
-        console.error('Auth Error:', error.message);
-        return res.status(401).json({ message: 'Not authorized, token failed' });
+        console.error('❌ AUTH ERROR:', error.message);
+        return res.status(401).json({ message: `Not authorized: ${error.message}` });
     }
 };
 
