@@ -18,58 +18,63 @@ const generateToken = (id) => {
 // @route   POST /api/auth/register
 // @access  Public
 const registerUser = async (req, res) => {
-    const { name, email, password, businessName, whatsappNumber, plan } = req.body;
+    try {
+        const { name, email, password, businessName, whatsappNumber, plan } = req.body;
 
-    if (!name || !email || !password || !businessName) {
-        return res.status(400).json({ message: 'Please add all fields' });
-    }
+        if (!name || !email || !password || !businessName) {
+            return res.status(400).json({ message: 'Please add all fields' });
+        }
 
-    // Check if user exists
-    const userExists = await User.findOne({ email: email.toLowerCase() });
+        // Check if user exists
+        const userExists = await User.findOne({ email: email.toLowerCase() });
 
-    if (userExists) {
-        return res.status(400).json({ message: 'User already exists' });
-    }
+        if (userExists) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
 
-    // Determine contact limit based on plan
-    const selectedPlan = plan ? plan.toLowerCase() : 'startup';
-    const planInfo = PLANS[selectedPlan.toUpperCase()] || PLANS.STARTUP;
+        // Determine contact limit based on plan
+        const selectedPlan = plan ? plan.toLowerCase() : 'startup';
+        const planInfo = PLANS[selectedPlan.toUpperCase()] || PLANS.STARTUP;
 
-    // Hash password handled in Model pre-save
-    const user = await User.create({
-        name,
-        email: email.toLowerCase(),
-        password,
-        businessName,
-        whatsappNumber,
-        plan: planInfo.name,
-        contactLimit: planInfo.contactLimit,
-        billingCycle: req.body.billingCycle || 'monthly',
-        paymentStatus: 'pending' // Always pending on registration
-    });
-
-    if (user) {
-        const token = generateToken(user.id);
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: true, // Required for sameSite: 'none' and Railway
-            sameSite: 'none', // Required for cross-site (Railway -> Vercel)
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+        // Hash password handled in Model pre-save
+        const user = await User.create({
+            name,
+            email: email.toLowerCase(),
+            password,
+            businessName,
+            whatsappNumber,
+            plan: planInfo.name,
+            contactLimit: planInfo.contactLimit,
+            billingCycle: req.body.billingCycle || 'monthly',
+            paymentStatus: 'pending' // Always pending on registration
         });
 
-        res.status(201).json({
-            _id: user.id,
-            name: user.name,
-            email: user.email,
-            businessName: user.businessName,
-            plan: user.plan,
-            contactLimit: user.contactLimit,
-            paymentStatus: user.paymentStatus,
-            role: user.role,
-            token // Added here
-        });
-    } else {
-        res.status(400).json({ message: 'Invalid user data' });
+        if (user) {
+            const token = generateToken(user.id);
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: true, // Required for sameSite: 'none' and Railway
+                sameSite: 'none', // Required for cross-site (Railway -> Vercel)
+                maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+            });
+
+            res.status(201).json({
+                _id: user.id,
+                name: user.name,
+                email: user.email,
+                businessName: user.businessName,
+                plan: user.plan,
+                contactLimit: user.contactLimit,
+                paymentStatus: user.paymentStatus,
+                role: user.role,
+                token // Added here
+            });
+        } else {
+            res.status(400).json({ message: 'Invalid user data' });
+        }
+    } catch (error) {
+        console.error('Register Error:', error);
+        res.status(500).json({ message: 'Server Error during registration' });
     }
 };
 
@@ -77,34 +82,43 @@ const registerUser = async (req, res) => {
 // @route   POST /api/auth/login
 // @access  Public
 const loginUser = async (req, res) => {
-    const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
 
-    // Check for user email
-    const user = await User.findOne({ email: email.toLowerCase() });
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Please provide email and password' });
+        }
 
-    if (user && (await user.matchPassword(password))) {
-        const token = generateToken(user.id);
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: true, // Required for sameSite: 'none'
-            sameSite: 'none',
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
-        });
+        // Check for user email
+        const user = await User.findOne({ email: email.toLowerCase() });
 
-        res.json({
-            _id: user.id,
-            name: user.name,
-            email: user.email,
-            businessName: user.businessName,
-            reviewLink: user.reviewLink,
-            plan: user.plan,
-            contactLimit: user.contactLimit,
-            paymentStatus: user.paymentStatus,
-            role: user.role,
-            token // Added here
-        });
-    } else {
-        res.status(401).json({ message: 'Invalid credentials' });
+        if (user && (await user.matchPassword(password))) {
+            const token = generateToken(user.id);
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: true, // Required for sameSite: 'none'
+                sameSite: 'none',
+                maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+            });
+
+            res.json({
+                _id: user.id,
+                name: user.name,
+                email: user.email,
+                businessName: user.businessName,
+                reviewLink: user.reviewLink,
+                plan: user.plan,
+                contactLimit: user.contactLimit,
+                paymentStatus: user.paymentStatus,
+                role: user.role,
+                token // Added here
+            });
+        } else {
+            res.status(401).json({ message: 'Invalid credentials' });
+        }
+    } catch (error) {
+        console.error('Login Error:', error);
+        res.status(500).json({ message: 'Server Error during login' });
     }
 };
 

@@ -13,7 +13,7 @@ const app = express();
 app.set("trust proxy", 1);
 // Connect to Database
 connectDB();
-    
+
 const allowedOrigins = [
     'https://reviewblast.vercel.app',
     'http://localhost:5173',
@@ -106,6 +106,16 @@ app.post('/api/whatsapp/status', async (req, res) => {
         console.error('❌ Status Callback Error:', error);
         res.sendStatus(500);
     }
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error(`❌ Global Error: ${err.message}`);
+    console.error(err.stack);
+    res.status(err.status || 500).json({
+        message: err.message || 'Internal Server Error',
+        stack: process.env.NODE_ENV === 'production' ? null : err.stack
+    });
 });
 
 const PORT = process.env.PORT || 5000;
