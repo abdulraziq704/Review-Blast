@@ -2,8 +2,11 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // Use the Vite environment variable, fallback to local for development
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+    // This ensures that even if VITE_API_URL is just the domain, 
+    // it always appends /api to match your backend index.js
+    baseURL: import.meta.env.VITE_API_URL
+        ? `${import.meta.env.VITE_API_URL}/api`
+        : 'http://localhost:5000/api',
     withCredentials: true
 });
 
