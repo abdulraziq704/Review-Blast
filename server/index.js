@@ -18,7 +18,7 @@ const allowedOrigins = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'https://loan-nonfanatical-overdiffusely.ngrok-free.dev',
-    'https://reviewblast.vercel.app/'
+    'https://reviewblast.vercel.app'
 ];
 
 app.use(cors({
