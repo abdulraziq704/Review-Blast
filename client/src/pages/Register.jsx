@@ -35,7 +35,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const success = await register(formData);
+        const success = await register({ ...formData, billingCycle });
         if (success) {
             navigate('/dashboard');
         }
