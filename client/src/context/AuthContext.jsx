@@ -19,7 +19,10 @@ export const AuthProvider = ({ children }) => {
                 }
                 setUser(data);
             } catch (error) {
-                console.error('Session check failed:', error.response?.status, error.response?.data);
+                // Silently handle 401 (not logged in) to avoid console noise
+                if (error.response?.status !== 401) {
+                    console.error('Session check failed:', error.response?.status, error.response?.data);
+                }
                 setUser(null);
             } finally {
                 setLoading(false);
