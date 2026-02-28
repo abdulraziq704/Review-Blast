@@ -31,8 +31,9 @@ const allowedOrigins = [
     'https://loan-nonfanatical-overdiffusely.ngrok-free.dev',
     'https://reviewblast-git-main-abdullraziqs-projects.vercel.app',
     'https://reviewblast-of4bpum5v-abdullraziqs-projects.vercel.app',
+    'https://reviewblast.up.railway.app'
     // In case the user adds more vercel domains later
-    /\.vercel\.app$/
+   
 ];
 
 app.use(cors({
