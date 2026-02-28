@@ -44,6 +44,8 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    
+
     const login = async (formData) => {
         try {
             const { data } = await api.post('/auth/login', formData);
