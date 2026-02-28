@@ -52,8 +52,8 @@ const registerUser = async (req, res) => {
         const token = generateToken(user.id);
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: true, // Required for sameSite: 'none' and Railway
+            sameSite: 'none', // Required for cross-site (Railway -> Vercel)
             maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
         });
 
@@ -86,8 +86,8 @@ const loginUser = async (req, res) => {
         const token = generateToken(user.id);
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            secure: true, // Required for sameSite: 'none'
+            sameSite: 'none',
             maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
         });
 
@@ -188,6 +188,8 @@ const updatePaymentStatus = async (req, res) => {
 const logoutUser = (req, res) => {
     res.cookie('token', '', {
         httpOnly: true,
+        secure: true,
+        sameSite: 'none',
         expires: new Date(0)
     });
     res.status(200).json({ message: 'Logged out' });
@@ -260,8 +262,8 @@ const resetPassword = async (req, res) => {
     const token = generateToken(user._id);
     res.cookie('token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        secure: true,
+        sameSite: 'none',
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     });
 

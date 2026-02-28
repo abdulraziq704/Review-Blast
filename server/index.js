@@ -2,6 +2,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') }); // Force specific path
 const express = require('express');
+
 const cors = require('cors');
 // ... rest of your imports
 const helmet = require('helmet');
@@ -9,23 +10,35 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 
 const app = express();
-
+app.set("trust proxy", 1);
 // Connect to Database
 connectDB();
-
-// CORS MUST be first!
+    
 const allowedOrigins = [
+    'https://reviewblast.vercel.app',
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'https://loan-nonfanatical-overdiffusely.ngrok-free.dev',
-    'https://reviewblast.vercel.app'
+    'https://reviewblast-git-main-abdullraziqs-projects.vercel.app',
+    'https://reviewblast-of4bpum5v-abdullraziqs-projects.vercel.app',
 ];
 
 app.use(cors({
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
+        // allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        const isAllowed = allowedOrigins.some(allowed => {
+            if (allowed instanceof RegExp) {
+                return allowed.test(origin);
+            }
+            return allowed === origin;
+        });
+
+        if (isAllowed) {
             callback(null, true);
         } else {
+            console.log("Blocked by CORS:", origin);
             callback(new Error('Not allowed by CORS'));
         }
     },
