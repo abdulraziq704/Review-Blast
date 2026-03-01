@@ -67,20 +67,30 @@ const PricingSection = () => {
                     </motion.h2>
 
                     {/* Billing Toggle */}
-                    <div className="flex items-center justify-center space-x-4">
-                        <span className={`text-lg font-bold ${billingCycle === 'monthly' ? 'text-gray-900' : 'text-gray-400'}`}>Monthly</span>
-                        <button
-                            onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
-                            className="w-16 h-8 bg-gray-200 rounded-full relative p-1 transition-colors hover:bg-indigo-300"
-                        >
-                            <motion.div
-                                animate={{ x: billingCycle === 'monthly' ? 0 : 32 }}
-                                className="w-6 h-6 bg-indigo-600 rounded-full shadow-md"
-                            />
-                        </button>
-                        <span className={`text-lg font-bold ${billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-400'}`}>
-                            Yearly <span className="text-sm bg-green-100 text-green-700 px-2 py-1 rounded-full ml-1">SAVE 20%</span>
-                        </span>
+                    <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center space-x-4">
+                            <span className={`text-lg font-bold ${billingCycle === 'monthly' ? 'text-gray-900' : 'text-gray-400'}`}>Monthly</span>
+                            <button
+                                onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
+                                className="w-16 h-8 bg-gray-200 rounded-full relative p-1 transition-colors hover:bg-indigo-300"
+                            >
+                                <motion.div
+                                    animate={{ x: billingCycle === 'monthly' ? 0 : 32 }}
+                                    className="w-6 h-6 bg-indigo-600 rounded-full shadow-md"
+                                />
+                            </button>
+                            <span className={`text-lg font-bold ${billingCycle === 'yearly' ? 'text-gray-900' : 'text-gray-400'}`}>
+                                Yearly
+                            </span>
+                        </div>
+                        {billingCycle === 'yearly' && (
+                            <div className="mt-4">
+                                <span className="bg-green-100 text-green-700 text-[10px] md:text-xs px-2 py-0.5 rounded-full font-bold whitespace-nowrap">
+                                    SAVE 20%
+                                </span>
+                            </div>
+                        )}
+
                     </div>
                 </div>
 
@@ -107,7 +117,7 @@ const PricingSection = () => {
 
                             <h3 className="text-2xl font-black text-gray-900 mb-2">{plan.name}</h3>
                             <div className="mb-8">
-                                <span className="text-5xl font-black text-gray-900">
+                                <span className="text-4xl sm:text-5xl font-black text-gray-900">
                                     PKR {billingCycle === 'monthly' ? plan.monthlyPrice.toLocaleString() : plan.yearlyPrice.toLocaleString()}
                                 </span>
                                 <span className="text-gray-500 ml-2">/ {billingCycle === 'monthly' ? 'mo' : 'yr'}</span>

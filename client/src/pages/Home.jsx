@@ -41,16 +41,17 @@ const Home = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h1 className="text-5xl sm:text-7xl lg:text-7xl font-black tracking-tight text-gray-900 mb-8 leading-tight">
+                        <h1 className="text-4xl sm:text-7xl lg:text-7xl font-black tracking-tight text-gray-900 mb-8 leading-tight">
                             Get 10x More <span className="text-indigo-600">Google Reviews</span> <br className="hidden lg:block" /> using WhatsApp
                         </h1>
                         <p className="max-w-3xl mx-auto text-xl sm:text-2xl text-gray-600 mb-12 leading-relaxed">
                             Designed specifically for <span className="font-bold text-gray-900 underline decoration-indigo-500">Pakistani business owners</span>. Automate your reputation, build trust, and dominate local search results.
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-                            <Link to="/plans" className="px-10 py-5 rounded-full bg-indigo-600 text-white font-black text-xl hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-2xl shadow-indigo-200">
-                                Start My Free Trial
+                            <Link to="/pricing" className="px-10 py-5 rounded-full bg-indigo-600 text-white font-black text-xl hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-2xl shadow-indigo-200">
+                                Get Started Now
                             </Link>
+
                             <a href="#process" className="px-10 py-5 rounded-full border-2 border-gray-200 text-gray-700 font-bold text-xl hover:border-indigo-600 hover:text-indigo-600 transition-all">
                                 See How It Works
                             </a>
@@ -81,7 +82,7 @@ const Home = () => {
             <section id="process" className="py-24 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-20">
-                        <h2 className="text-4xl sm:text-5xl font-black text-gray-900 mb-6">The "3-Step Success" Process</h2>
+                        <h2 className="text-4xl sm:text-5xl font-black text-gray-900 mb-6">The <span className="text-indigo-600">"3-Step Success"</span> Process</h2>
                         <p className="text-gray-600 text-xl max-w-2xl mx-auto">From messy customer lists to a wall of 5-star reviews.</p>
                     </div>
 
@@ -180,9 +181,10 @@ const Home = () => {
                         <div className="relative z-10">
                             <h2 className="text-4xl sm:text-6xl font-black mb-8 leading-tight">Ready to Become the Best Rated Business in Town?</h2>
                             <p className="text-indigo-100 text-xl mb-12 max-w-2xl mx-auto">Join hundreds of Pakistani entrepreneurs who are using ReviewBlast to automate their growth. No credit card required to start.</p>
-                            <Link to="/plans" className="inline-block px-12 py-6 rounded-full bg-white text-indigo-600 font-black text-2xl hover:bg-indigo-50 transition-all transform hover:scale-105 shadow-xl">
+                            <Link to="/pricing" className="inline-block px-12 py-6 rounded-full bg-white text-indigo-600 font-black text-2xl hover:bg-indigo-50 transition-all transform hover:scale-105 shadow-xl">
                                 Get Started Now
                             </Link>
+
                         </div>
                         {/* Background elements */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>

@@ -38,7 +38,7 @@ const ReviewSlider = () => {
     ];
 
     return (
-        <section className="py-24 bg-indigo-900 text-white overflow-hidden relative">
+        <section className="py-24 bg-indigo-900 text-white relative">
             {/* Decorative dots */}
             <div className="absolute top-10 right-10 opacity-20">
                 <div className="grid grid-cols-6 gap-2">
@@ -48,8 +48,8 @@ const ReviewSlider = () => {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+                <div className="text-center mb-16 py-8">
                     <motion.h2
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
@@ -72,7 +72,7 @@ const ReviewSlider = () => {
                         768: { slidesPerView: 2 },
                         1024: { slidesPerView: 3 },
                     }}
-                    className="pb-12"
+                    className="pb-12 pt-10 -mt-10 !overflow-visible"
                 >
                     {reviews.map((review, idx) => (
                         <SwiperSlide key={idx}>

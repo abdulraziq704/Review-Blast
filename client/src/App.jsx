@@ -15,7 +15,8 @@ import ResetPassword from './pages/ResetPassword';
 // Public Pages
 import PublicLayout from './components/PublicLayout';
 import Home from './pages/Home';
-import Plans from './pages/Plans';
+import Pricing from './pages/Pricing';
+
 import About from './pages/About';
 import Contact from './pages/Contact';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -29,7 +30,8 @@ function App() {
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
-            <Route path="/plans" element={<Plans />} />
+            <Route path="/pricing" element={<Pricing />} />
+
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />

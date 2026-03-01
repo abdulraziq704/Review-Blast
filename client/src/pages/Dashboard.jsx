@@ -26,8 +26,9 @@ const Dashboard = () => {
                 const { data: contactData } = await api.get('/contacts');
                 setStats({
                     totalContacts: contactData.length,
-                    sentMessages: contactData.filter(c => c.status === 'sent').length
+                    sentMessages: contactData.filter(c => ['sent', 'delivered', 'read'].includes(c.status)).length
                 });
+
 
                 // 2. Fetch Fresh User Data from DB (The source of truth)
                 const { data: userData } = await api.get('/auth/me');

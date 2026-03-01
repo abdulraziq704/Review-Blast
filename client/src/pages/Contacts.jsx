@@ -137,7 +137,17 @@ const Contacts = () => {
 
             {activeTab === 'active' && (
                 <div className="bg-white p-6 rounded shadow">
-                    <h2 className="text-lg font-semibold mb-4">Upload Users via CSV</h2>
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-semibold">Upload Users via CSV</h2>
+                        <a
+                            href="https://docs.google.com/spreadsheets/d/1OBs_YrBr3BZEDGR81h5BabNvi6zaWkc-QKmmtK1eAj4/edit?usp=sharing"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-indigo-600 hover:text-indigo-800 font-medium underline transition-colors"
+                        >
+                            See Sample File
+                        </a>
+                    </div>
                     <CSVUpload onUploadSuccess={fetchContacts} />
                 </div>
             )}
