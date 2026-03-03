@@ -72,7 +72,7 @@ const ReviewSlider = () => {
                         768: { slidesPerView: 2 },
                         1024: { slidesPerView: 3 },
                     }}
-                    className="pb-12 pt-10 -mt-10 !overflow-visible"
+                    className="pb-12 pt-10 -mt-10"
                 >
                     {reviews.map((review, idx) => (
                         <SwiperSlide key={idx}>

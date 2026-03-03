@@ -55,7 +55,7 @@ const PricingSection = () => {
     };
 
     return (
-        <section id="pricing" className="py-24 bg-gray-50 relative overflow-hidden">
+        <section id="pricing" className="py-24 bg-gray-50 relative overflow-hidden w-full max-w-[100vw]">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <motion.h2
@@ -85,8 +85,13 @@ const PricingSection = () => {
                         </div>
                         {billingCycle === 'yearly' && (
                             <div className="mt-4">
-                                <span className="bg-green-100 text-green-700 text-[10px] md:text-xs px-2 py-0.5 rounded-full font-bold whitespace-nowrap">
-                                    SAVE 20%
+                                <span className="bg-green-100 text-green-700 text-sm md:text-base px-5 py-2 rounded-2xl md:rounded-full font-extrabold shadow-sm flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3 max-w-[90vw] mx-auto transition-transform hover:scale-105 border border-green-200">
+                                    <span className="bg-green-600 text-white px-3 py-0.5 rounded-lg text-xs md:text-sm uppercase tracking-wider mb-1 sm:mb-0">
+                                        Limited Time Offer
+                                    </span>
+                                    <span className="text-center">
+                                        SAVE 20% <span className="text-green-600 font-medium">and enjoy 2 months free</span>
+                                    </span>
                                 </span>
                             </div>
                         )}
