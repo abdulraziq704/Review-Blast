@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import PricingSection from '../components/PricingSection';
 import ReviewSlider from '../components/ReviewSlider';
+import VideoSection from '../components/VideoSection';
 
 const Home = () => {
     const containerVariants = {
@@ -48,13 +49,13 @@ const Home = () => {
                             Designed specifically for <span className="font-bold text-gray-900 underline decoration-indigo-500">Pakistani business owners</span>. Automate your reputation, build trust, and dominate local search results.
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-                            <Link to="/pricing" className="px-10 py-5 rounded-full bg-indigo-600 text-white font-black text-xl hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-2xl shadow-indigo-200">
+                            <Link to="/register" className="px-10 py-5 rounded-full bg-indigo-600 text-white font-black text-xl hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-2xl shadow-indigo-200 text-center">
                                 Get Started Now
                             </Link>
 
-                            <a href="#process" className="px-10 py-5 rounded-full border-2 border-gray-200 text-gray-700 font-bold text-xl hover:border-indigo-600 hover:text-indigo-600 transition-all">
-                                See How It Works
-                            </a>
+                            <Link to="/how-to-use" className="px-10 py-5 rounded-full border-2 border-gray-200 text-gray-700 font-bold text-xl hover:border-indigo-600 hover:text-indigo-600 transition-all text-center">
+                                Watch Demo
+                            </Link>
                         </div>
                     </motion.div>
                 </div>
@@ -163,6 +164,9 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Video Section */}
+            <VideoSection />
 
             {/* Pricing Section Component */}
             <PricingSection />

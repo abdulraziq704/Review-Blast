@@ -35,8 +35,9 @@ const PublicLayout = () => {
                         </div>
                         <div className="hidden md:flex items-center space-x-8">
                             <Link to="/" className="text-sm font-medium hover:text-indigo-600 transition-colors">Home</Link>
-                            <Link to="/pricing" className="text-sm font-medium hover:text-indigo-600 transition-colors">Pricing</Link>
                             <Link to="/about" className="text-sm font-medium hover:text-indigo-600 transition-colors">About</Link>
+                            <Link to="/pricing" className="text-sm font-medium hover:text-indigo-600 transition-colors">Pricing</Link>
+                            <Link to="/how-to-use" className="text-sm font-medium hover:text-indigo-600 transition-colors">How to Use</Link>
                             <Link to="/contact" className="text-sm font-medium hover:text-indigo-600 transition-colors">Contact</Link>
                             <Link to="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900">Sign In</Link>
 
@@ -72,6 +73,7 @@ const PublicLayout = () => {
                     <div className="px-4 pt-2 pb-6 space-y-1 sm:px-3">
                         <Link to="/" onClick={toggleMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors">Home</Link>
                         <Link to="/pricing" onClick={toggleMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors">Pricing</Link>
+                        <Link to="/how-to-use" onClick={toggleMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors">How to Use</Link>
                         <Link to="/about" onClick={toggleMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors">About</Link>
                         <Link to="/contact" onClick={toggleMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors">Contact</Link>
                         <Link to="/login" onClick={toggleMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-50 transition-colors">Sign In</Link>
@@ -114,6 +116,7 @@ const PublicLayout = () => {
                             <ul className="space-y-2">
                                 <li><Link to="/" className="text-sm text-gray-500 hover:text-indigo-600">Features</Link></li>
                                 <li><Link to="/pricing" className="text-sm text-gray-500 hover:text-indigo-600">Pricing</Link></li>
+                                <li><Link to="/how-to-use" className="text-sm text-gray-500 hover:text-indigo-600">How to Use</Link></li>
 
                             </ul>
                         </div>

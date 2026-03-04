@@ -8,7 +8,11 @@ import InstructionModal from '../components/InstructionModal';
 const Dashboard = () => {
     const { user, setUser } = useContext(AuthContext);
     const [stats, setStats] = useState({ totalContacts: 0, sentMessages: 0 });
-    const [reviewLink, setReviewLink] = useState(user?.reviewLink || '');
+    const [profileData, setProfileData] = useState({
+        name: user?.name || '',
+        businessName: user?.businessName || '',
+        reviewLink: user?.reviewLink || ''
+    });
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -32,9 +36,13 @@ const Dashboard = () => {
 
                 // 2. Fetch Fresh User Data from DB (The source of truth)
                 const { data: userData } = await api.get('/auth/me');
-                if (userData.reviewLink) {
-                    setReviewLink(userData.reviewLink);
-                    // Sync the context so other pages (like Send Reviews) have the link
+                if (userData) {
+                    setProfileData({
+                        name: userData.name || '',
+                        businessName: userData.businessName || '',
+                        reviewLink: userData.reviewLink || ''
+                    });
+                    // Sync the context so other pages have fresh data
                     if (setUser) {
                         setUser(prev => ({ ...prev, ...userData }));
                     }
@@ -44,28 +52,27 @@ const Dashboard = () => {
             }
         };
         initialization();
-    }, [setUser]); // Added setUser to dependency array
+    }, [setUser]);
 
-    const handleSaveLink = async () => {
+    const handleUpdateProfile = async () => {
         if (loading) return;
         setLoading(true);
         try {
-            const { data } = await api.put('/auth/profile', { reviewLink });
+            const { data } = await api.put('/auth/profile', profileData);
 
-            // Success: update state and context
+            // Success: update context
             if (setUser) {
-                setUser(prev => ({ ...prev, reviewLink: data.reviewLink }));
+                setUser(prev => ({ ...prev, ...data }));
             }
 
-            toast.success('Google Review Link saved!');
+            toast.success('Profile updated successfully!');
         } catch {
-            // This will only trigger now if the actual API fails
-            toast.error('Failed to save link.');
+            toast.error('Failed to update profile.');
         } finally {
-            // Small delay to prevent the double-toast glitch
             setTimeout(() => setLoading(false), 500);
         }
     };
+
     return (
         <div className="space-y-6 pb-12">
             {/* Payment Status Banner */}
@@ -79,9 +86,9 @@ const Dashboard = () => {
                         </div>
                         <div className="ml-3 flex-1 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div>
-                                <h3 className="text-sm font-bold text-red-800">Payment Pending</h3>
+                                <h3 className="text-sm font-bold text-red-800">Account Pending Status</h3>
                                 <p className="text-sm text-red-700">
-                                    Your account is currently restricted. Please complete your payment for the <span className="font-bold uppercase">{user.plan}</span> plan to enable message sending and contact management.
+                                    Your account pending status is not approved yet. We take up to 2 hours after your payment to activate your status. If any issues exist, contact support: <a href="https://wa.me/923284638553" target="_blank" rel="noopener noreferrer" className="font-black underline decoration-red-300 underline-offset-2 hover:text-red-900 transition-colors">03284638553</a>
                                 </p>
                             </div>
                             <button
@@ -135,41 +142,74 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {/* Settings & Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h3 className="text-lg font-bold text-gray-800 mb-2">Google Review Card</h3>
-                    <p className="text-sm text-gray-500 mb-4">Your review link will be automatically attached to WhatsApp messages.</p>
-                    <div className="flex gap-2">
-                        <input
-                            type="text"
-                            placeholder="https://g.page/r/your-id/review"
-                            className="flex-1 bg-gray-50 border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition"
-                            value={reviewLink}
-                            onChange={(e) => setReviewLink(e.target.value)}
-                        />
-                        <button
-                            onClick={handleSaveLink}
-                            disabled={loading}
-                            className={`bg-indigo-600 text-white px-5 py-3 rounded-xl font-bold hover:bg-indigo-700 transition shadow-md active:scale-95 ${loading ? 'opacity-50' : ''}`}
-                        >
-                            {loading ? '...' : 'Save'}
-                        </button>
-                    </div>
-                </div>
+            {/* Business Settings */}
+            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <h3 className="text-xl font-bold text-gray-800 mb-6 border-b pb-4">Business Settings</h3>
 
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4">Account Actions</h3>
-                    <div className="flex flex-wrap gap-3">
-                        <Link to="/contacts" className="flex-1 text-center py-3 bg-gray-50 text-gray-700 rounded-xl font-bold hover:bg-gray-100 transition border border-gray-200">
-                            Contacts List
-                        </Link>
-                        <Link to="/contacts" className="flex-1 text-center py-3 bg-indigo-50 text-indigo-700 rounded-xl font-bold hover:bg-indigo-100 transition border border-indigo-100">
-                            Import CSV
-                        </Link>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Left Side: Business Info */}
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-tight">Business Name</label>
+                            <input
+                                type="text"
+                                className="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition"
+                                value={profileData.businessName}
+                                onChange={(e) => setProfileData(prev => ({ ...prev, businessName: e.target.value }))}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-tight">Google Review Link</label>
+                            <input
+                                type="text"
+                                placeholder="https://g.page/r/your-id/review"
+                                className="w-full bg-gray-50 border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition"
+                                value={profileData.reviewLink}
+                                onChange={(e) => setProfileData(prev => ({ ...prev, reviewLink: e.target.value }))}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Right Side: Actions */}
+                    <div className="flex flex-col justify-end gap-4">
+                        <p className="text-[11px] text-gray-400 italic leading-relaxed">
+                            Updating your business name will reflect across all campaign messages and your dashboard header instantly.
+                        </p>
+
+                        <div>
+                            <button
+                                onClick={handleUpdateProfile}
+                                disabled={loading}
+                                className={`w-full bg-indigo-600 text-white py-4 rounded-xl font-black text-lg hover:bg-indigo-700 transition shadow-xl shadow-indigo-100 active:scale-95 flex items-center justify-center gap-2 ${loading ? 'opacity-50' : ''}`}
+                            >
+                                {loading ? (
+                                    <>
+                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                        Saving...
+                                    </>
+                                ) : 'Save Business Settings'}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            {/* Quick Actions */}
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h3 className="text-sm font-bold text-gray-800 mb-4 uppercase tracking-widest opacity-50">Quick Navigation</h3>
+                <div className="flex flex-wrap gap-4">
+                    <Link to="/contacts" className="flex-1 min-w-[150px] text-center py-4 bg-gray-50 text-gray-700 rounded-xl font-bold hover:bg-gray-100 transition border border-gray-200 flex items-center justify-center gap-2">
+                        Contacts List
+                    </Link>
+                    <Link to="/contacts" className="flex-1 min-w-[150px] text-center py-4 bg-indigo-50 text-indigo-700 rounded-xl font-bold hover:bg-indigo-100 transition border border-indigo-100 flex items-center justify-center gap-2">
+                        Import New List
+                    </Link>
+                    <Link to="/send" className="flex-1 min-w-[150px] text-center py-4 bg-green-50 text-green-700 rounded-xl font-bold hover:bg-green-100 transition border border-green-100 flex items-center justify-center gap-2">
+                        Send Campaign
+                    </Link>
+                </div>
+            </div>
+
             {/* NEW Instruction Modal */}
             <InstructionModal
                 isOpen={isModalOpen}

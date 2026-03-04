@@ -153,6 +153,8 @@ const updateUserProfile = async (req, res) => {
         const user = await User.findById(req.user._id);
 
         if (user) {
+            user.name = req.body.name || user.name;
+            user.businessName = req.body.businessName || user.businessName;
             user.reviewLink = req.body.reviewLink || user.reviewLink;
             // Add any other profile updates here
 
