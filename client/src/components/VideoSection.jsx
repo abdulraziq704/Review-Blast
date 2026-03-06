@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const VideoSection = ({ title = "How to Use ReviewBlast", videoId = "y9j-BL5ofIs" }) => {
+const VideoSection = ({ title = "How to Use ReviewBlast", videoId = "76PHPUITlK4" }) => {
     return (
         <section className="py-24 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

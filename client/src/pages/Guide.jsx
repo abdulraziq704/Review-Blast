@@ -48,7 +48,7 @@ const Guide = () => {
             {/* Video Section */}
             <VideoSection
                 title="Full Platform Walkthrough"
-                videoId="y9j-BL5ofIs"
+                videoId="76PHPUITlK4"
             />
 
             {/* Step-by-Step Guide */}
