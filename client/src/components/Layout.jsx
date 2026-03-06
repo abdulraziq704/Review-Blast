@@ -46,8 +46,8 @@ const Layout = () => {
         <div className="flex h-screen bg-gray-100">
             {/* Sidebar */}
             <div className="w-16 md:w-64 bg-indigo-800 text-white flex flex-col transition-all duration-300">
-                <div className="flex items-center justify-center md:justify-start gap-4 p-4 h-16 border-b border-indigo-700 bg-indigo-900/50">
-                    
+                <div className="flex items-center justify-center md:justify-start gap-4 p-1 md:p-3 h-16 border-b border-indigo-700 bg-indigo-900/50">
+
                     <img
                         src="https://ik.imagekit.io/opspndgdf/Review_Blast_logo.png"
                         alt="ReviewBlast"
@@ -60,7 +60,7 @@ const Layout = () => {
                         <Link
                             key={item.path}
                             to={item.path}
-                            className={`flex items-center justify-center md:justify-start gap-3 p-3 md:px-4 md:py-2 rounded-xl transition-all duration-200 ${isActive(item.path)}`}
+                            className={`flex items-center justify-center md:justify-start gap-3 p-2 md:px-3 md:py-2 rounded-xl transition-all duration-200 ${isActive(item.path)}`}
                             title={item.label}
                         >
                             <span className="shrink-0">{item.icon}</span>
@@ -96,7 +96,7 @@ const Layout = () => {
             {/* Main Content */}
             <div className="flex-1 overflow-auto flex flex-col h-full bg-gray-50">
                 <header className="bg-white border-b border-gray-200 px-4 md:px-8 h-16 flex justify-between items-center shrink-0">
-                    <h1 className="text-lg md:text-xl font-bold text-gray-900">
+                    <h1 className="text-base md:text-xl font-bold text-gray-900 truncate">
                         {location.pathname === '/dashboard' && 'Dashboard'}
                         {location.pathname === '/contacts' && 'Contact Management'}
                         {location.pathname === '/send' && 'Send Review Campaign'}

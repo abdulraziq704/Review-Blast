@@ -56,59 +56,37 @@ const SendCampaign = () => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-            <div className="lg:col-span-5 flex justify-center py-4 lg:py-0">
-                {/* REDUCED HEIGHT & WIDTH: changed to w-[300px] and h-[520px] */}
-                <div className="relative w-[300px] h-[520px] bg-[#EFEAE2] border-[12px] border-gray-900 rounded-[2.5rem] shadow-xl overflow-hidden flex flex-col">
+            <div className="lg:col-span-5 flex justify-center  py-4 lg:py-0">
+                <div className="relative w-[300px] h-[600px]   overflow-hidden flex flex-col  ">
+                    {/* Mockup Image */}
+                    <img
+                        src="/reviewblast_mockups.webp"
+                        alt="WhatsApp Mockup"
+                        className="absolute inset-0 w-full h-full object-cover"
+                    />
 
-                    {/* Top Notch - scaled down to fit the new width */}
-                    <div className="absolute top-0 inset-x-0 h-5 w-32 bg-gray-900 mx-auto rounded-b-2xl z-20"></div>
-
-                    {/* WhatsApp Header - reduced top padding (pt-8) so the notch doesn't overlap */}
-                    <div className="bg-[#008069] text-white pt-8 pb-3 px-3 flex items-center gap-2 relative z-10 shadow-md">
-                        <div className="flex items-center gap-1 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-                            </svg>
-                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
-                                <svg className="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
-                            </div>
-                        </div>
-                        <div className="flex-1">
-                            <h2 className="text-[15px] font-semibold leading-tight">Customer</h2>
-                            <p className="text-[11px] text-gray-200">online</p>
-                        </div>
-                        <div className="flex gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" /></svg>
-                        </div>
-                    </div>
-
-                    {/* Chat Area Pattern Overlay */}
-                    <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.4' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E")` }}></div>
-
-                    {/* Messages Container */}
-                    <div className="flex-1 p-3 overflow-y-auto z-10 flex flex-col gap-2">
-
+                    {/* Messages Container Overlay - Positioned for the image's chat area */}
+                    <div className="absolute inset-x-0 top-[14%] bottom-[12%] px-6 overflow-y-auto z-10 flex flex-col gap-2">
                         {/* Received Message Bubble */}
-                        <div className="relative bg-white rounded-xl rounded-tl-none p-2 shadow-sm max-w-[90%] self-start mt-2">
+                        <div className="relative bg-white rounded-xl rounded-tl-none p-3 shadow-sm max-w-[95%] self-start mt-2 ml-1">
                             {/* Tail */}
                             <div className="absolute top-0 -left-[8px] w-0 h-0 border-t-[10px] border-t-white border-l-[10px] border-l-transparent"></div>
 
-                            {/* Text size reduced slightly to fit the smaller phone screen */}
-                            <div className="text-[13.5px] text-gray-800 leading-snug">
-                                {user?.reviewLink ? (
-                                    <>
-                                        Hi [Customer Name], thank you for choosing <strong>{user.businessName}</strong>. We'd love your feedback! Please leave us a review here: <a href={user.reviewLink} className="text-blue-500 break-all">{user.reviewLink}</a>
-                                    </>
-                                ) : (
-                                    <span className="text-red-500">Warning: No review link set!</span>
-                                )}
+                            <div className="text-[13px] text-gray-800 leading-snug">
+                                <>
+                                    Hello [Customer Name],<br /><br />
+                                    Thank you for choosing <strong>{user.businessName}</strong>. We truly appreciate your visit and hope you had a great experience with us.<br /><br />
+                                    If you have a moment, we would love to hear your thoughts. Your feedback helps us improve and helps others make better choices.<br /><br />
+                                    Please share your review here:<br />
+                                    <a href={user.reviewLink} className="text-blue-500 break-all">{user.reviewLink}</a><br /><br />
+                                    Thank you again for your time and support!
+                                </>
                             </div>
 
                             <div className="text-[10px] text-gray-400 text-right mt-1 font-medium">
                                 {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -118,19 +96,7 @@ const SendCampaign = () => {
                 <div className="bg-white p-6 rounded shadow">
                     <h2 className="text-xl font-bold mb-4">Send Review Campaign</h2>
 
-                    {/* Raw Text Preview */}
-                    <div className="mb-6 p-4 bg-gray-50 rounded border border-gray-200">
-                        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Message Content</h3>
-                        <div className="p-3 bg-white border rounded text-sm text-gray-700 italic">
-                            {user?.reviewLink ? (
-                                <>
-                                    Hi [Customer Name], Thank you for choosing <span className="font-semibold text-indigo-600">{user.businessName}</span>. We'd love your feedback! Please leave us a review here: <span className="text-blue-500 underline">{user.reviewLink}</span>
-                                </>
-                            ) : (
-                                <span className="text-red-500">Warning: No review link set! Please add one in the Dashboard.</span>
-                            )}
-                        </div>
-                    </div>
+
 
                     {/* Stats */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -145,6 +111,21 @@ const SendCampaign = () => {
                         <div className="bg-green-50 p-4 rounded text-center">
                             <div className="text-2xl font-bold text-green-700">{sentCount}</div>
                             <div className="text-sm text-green-600">Sent</div>
+                        </div>
+                    </div>
+
+                    {/* Campaign Setup Info */}
+                    <div className="mb-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                        <h3 className="text-xs font-bold text-indigo-800 uppercase tracking-wider mb-3">Campaign Setup</h3>
+                        <div className="space-y-3">
+                            <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4 text-sm">
+                                <span className="text-gray-600">Business Name:</span>
+                                <span className="font-semibold text-gray-900 truncate">{user.businessName}</span>
+                            </div>
+                            <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4 text-sm items-start sm:items-center">
+                                <span className="text-gray-600">Review Link:</span>
+                                <span className="text-blue-600 truncate max-w-full sm:max-w-[200px] text-xs underline font-medium">{user.reviewLink || 'Not Set'}</span>
+                            </div>
                         </div>
                     </div>
 
