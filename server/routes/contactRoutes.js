@@ -8,6 +8,7 @@ const {
     sendReviews,
     deleteContact,
     bulkDeleteContacts,
+    getContactStats,
 } = require('../controllers/contactController');
 const { protect } = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
@@ -16,6 +17,7 @@ router.route('/')
     .get(protect, getContacts)
     .post(protect, addContact);
 
+router.get('/stats', protect, getContactStats);
 router.post('/upload', protect, upload.single('file'), uploadContacts);
 router.post('/send-reviews', protect, sendReviews);
 router.put('/:id', protect, updateContact);

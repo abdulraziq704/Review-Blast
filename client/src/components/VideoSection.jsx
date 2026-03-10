@@ -4,6 +4,15 @@ import { motion } from 'framer-motion';
 const VideoSection = ({ title = "How to Use ReviewBlast", videoId = "76PHPUITlK4" }) => {
     return (
         <section className="py-24 bg-white overflow-hidden">
+            <div className="mb-12 text-center">
+                    <div className="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-6 py-3 rounded-full font-bold text-sm">
+                        <span className="relative flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
+                        </span>
+                        Step-by-step video guide
+                    </div>
+                </div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <motion.h2
@@ -42,15 +51,7 @@ const VideoSection = ({ title = "How to Use ReviewBlast", videoId = "76PHPUITlK4
                     ></iframe>
                 </motion.div>
 
-                <div className="mt-12 text-center">
-                    <div className="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-6 py-3 rounded-full font-bold text-sm">
-                        <span className="relative flex h-3 w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
-                        </span>
-                        Step-by-step video guide
-                    </div>
-                </div>
+                
             </div>
         </section>
     );

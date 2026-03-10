@@ -13,6 +13,7 @@ import {
     Star
 } from 'lucide-react';
 import PricingSection from '../components/PricingSection';
+import WhyReviewsMatter from '../components/WhyReviewsMatter';
 import ReviewSlider from '../components/ReviewSlider';
 import VideoSection from '../components/VideoSection';
 
@@ -97,34 +98,34 @@ const Home = () => {
                         {/* Step 1 */}
                         <motion.div variants={itemVariants} className="flex flex-col items-center">
                             <div className="relative mb-10 group">
-                                <div className="absolute -inset-4 bg-indigo-500 rounded-3xl blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                                <div className="relative w-full aspect-[9/16] max-w-[280px] bg-gray-900 rounded-[3rem] border-8 border-gray-800 shadow-2xl overflow-hidden flex flex-col items-center justify-center p-6 text-center text-white">
+                                <div className="absolute -inset-2 bg-indigo-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                                <div className="relative w-full aspect-[9/16] max-w-[280px] bg-white rounded-[3rem] border-4 border-indigo-500 shadow-lg overflow-hidden flex flex-col items-center justify-center p-6 text-center text-black">
                                     <Upload size={64} className="text-indigo-400 mb-6" />
                                     <h4 className="text-2xl font-bold mb-4">Upload Your List</h4>
                                     <p className="text-gray-400 text-sm">Drag and drop your customer CSV file. We handle the formatting automatically.</p>
                                 </div>
-                                <div className="absolute -top-4 -left-4 w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center font-black text-2xl text-white shadow-lg">1</div>
+                                <div className="absolute -top-4 -left-4 w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center font-black text-lg text-white shadow-lg">1</div>
                             </div>
                         </motion.div>
 
                         {/* Step 2 */}
                         <motion.div variants={itemVariants} className="flex flex-col items-center">
                             <div className="relative mb-10 group">
-                                <div className="absolute -inset-4 bg-purple-500 rounded-3xl blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                                <div className="relative w-full aspect-[9/16] max-w-[280px] bg-gray-900 rounded-[3rem] border-8 border-gray-800 shadow-2xl overflow-hidden flex flex-col items-center justify-center p-6 text-center text-white">
+                                <div className="absolute -inset-2 bg-purple-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                                <div className="relative w-full aspect-[9/16] max-w-[280px] bg-white rounded-[3rem] border-4 border-purple-500 shadow-lg   flex flex-col items-center justify-center p-6 text-center text-black">
                                     <Zap size={64} className="text-purple-400 mb-6" />
                                     <h4 className="text-2xl font-bold mb-4">Automate the Send</h4>
                                     <p className="text-gray-400 text-sm">Official Twilio API ensures your messages land safely. Your customers see a professional WhatsApp request.</p>
                                 </div>
-                                <div className="absolute -top-4 -left-4 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center font-black text-2xl text-white shadow-lg">2</div>
+                                <div className="absolute -top-4 -left-4 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center font-black text-lg text-white shadow-lg">2</div>
                             </div>
                         </motion.div>
 
                         {/* Step 3 */}
                         <motion.div variants={itemVariants} className="flex flex-col items-center">
                             <div className="relative mb-10 group">
-                                <div className="absolute -inset-4 bg-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                                <div className="relative w-full aspect-[9/16] max-w-[280px] bg-gray-900 rounded-[3rem] border-8 border-gray-800 shadow-2xl overflow-hidden flex flex-col items-center justify-center p-6 text-center text-white text-indigo-100">
+                                <div className="absolute -inset-2 bg-pink-500 rounded-3xl blur opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                                <div className="relative w-full aspect-[9/16] max-w-[280px]  bg-white rounded-[3rem] border-4 border-pink-500 shadow-lg overflow-hidden flex flex-col items-center justify-center p-6 text-center   text-black">
                                     <Star size={64} className="text-pink-400 mb-6" />
                                     <h4 className="text-2xl font-bold mb-4">See the Results</h4>
                                     <p className="text-gray-400 text-sm">Your customer receives a one-tap link to your Google Business profile. Reviews start rolling in instantly.</p>
@@ -171,6 +172,9 @@ const Home = () => {
             {/* Pricing Section Component */}
             <PricingSection />
 
+            {/* Why Reviews Matter Component */}
+            <WhyReviewsMatter />
+
             {/* Review Slider Component */}
             <ReviewSlider />
 
@@ -186,7 +190,7 @@ const Home = () => {
                             <h2 className="text-4xl sm:text-6xl font-black mb-8 leading-tight">Ready to Become the Best Rated Business in Town?</h2>
                             <p className="text-indigo-100 text-xl mb-12 max-w-2xl mx-auto">Join hundreds of Pakistani entrepreneurs who are using ReviewBlast to automate their growth. No credit card required to start.</p>
                             <Link to="/pricing" className="inline-block px-12 py-6 rounded-full bg-white text-indigo-600 font-black text-2xl hover:bg-indigo-50 transition-all transform hover:scale-105 shadow-xl">
-                                Get Started Now
+                                Get Started  
                             </Link>
 
                         </div>

@@ -1,25 +1,35 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import api from '../utils/api';
 import CSVUpload from '../components/CSVUpload';
 import { toast } from 'react-toastify';
 import { FaEdit, FaTrash } from 'react-icons/fa'; // Install react-icons
 
 const Contacts = () => {
+    const location = useLocation();
     const [contacts, setContacts] = useState([]);
     const [selectedIds, setSelectedIds] = useState([]);
     const [editingContact, setEditingContact] = useState(null);
     const [newContact, setNewContact] = useState({ name: '', phone: '' });
+    const [loading, setLoading] = useState(false);
 
     const [activeTab, setActiveTab] = useState('active'); // 'active' or 'history'
 
+    useEffect(() => {
+        if (location.state?.activeTab) {
+            setActiveTab(location.state.activeTab);
+        }
+    }, [location.state]);
+
     const fetchContacts = async () => {
+        setLoading(true);
         try {
             const { data } = await api.get('/contacts');
             setContacts(data);
         } catch {
             toast.error('Failed to fetch contacts');
         } finally {
-            // Loading state removed
+            setLoading(false);
         }
     };
 
@@ -196,32 +206,45 @@ const Contacts = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {filteredContacts.map((contact) => (
-                                <tr key={contact._id} className={selectedIds.includes(contact._id) ? 'bg-indigo-50' : ''}>
-                                    {activeTab === 'active' && (
-                                        <td className="px-6 py-4"><input type="checkbox" checked={selectedIds.includes(contact._id)} onChange={() => toggleSelect(contact._id)} /></td>
-                                    )}
-                                    <td className="px-6 py-4">{contact.name}</td>
-                                    <td className="px-6 py-4">{contact.phone}</td>
-                                    <td className="px-6 py-4">
-                                        <span className={`px-2 py-1 text-xs rounded-full ${contact.status === 'sent' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                            {contact.status}
-                                        </span>
-                                    </td>
-                                    {activeTab === 'active' && (
-                                        <td className="px-6 py-4 flex gap-3">
-                                            <button onClick={() => setEditingContact(contact)} className="text-blue-600 hover:text-blue-900"><FaEdit /></button>
-                                            <button onClick={() => handleDelete(contact._id)} className="text-red-600 hover:text-red-900"><FaTrash /></button>
-                                        </td>
-                                    )}
-                                </tr>
-                            ))}
-                            {filteredContacts.length === 0 && (
+                            {loading ? (
                                 <tr>
-                                    <td colSpan={activeTab === 'active' ? 5 : 3} className="px-6 py-8 text-center text-gray-500">
-                                        No contacts found in {activeTab === 'active' ? 'Active' : 'History'}.
+                                    <td colSpan={activeTab === 'active' ? 5 : 3} className="px-6 py-12 text-center text-gray-500">
+                                        <div className="flex flex-col items-center gap-3">
+                                            <div className="w-8 h-8 border-2 border-indigo-600/30 border-t-indigo-600 rounded-full animate-spin"></div>
+                                            <span className="font-medium animate-pulse">Loading contacts...</span>
+                                        </div>
                                     </td>
                                 </tr>
+                            ) : (
+                                <>
+                                    {filteredContacts.map((contact) => (
+                                        <tr key={contact._id} className={selectedIds.includes(contact._id) ? 'bg-indigo-50' : ''}>
+                                            {activeTab === 'active' && (
+                                                <td className="px-6 py-4"><input type="checkbox" checked={selectedIds.includes(contact._id)} onChange={() => toggleSelect(contact._id)} /></td>
+                                            )}
+                                            <td className="px-6 py-4">{contact.name}</td>
+                                            <td className="px-6 py-4">{contact.phone}</td>
+                                            <td className="px-6 py-4">
+                                                <span className={`px-2 py-1 text-xs rounded-full ${contact.status === 'sent' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                                                    {contact.status}
+                                                </span>
+                                            </td>
+                                            {activeTab === 'active' && (
+                                                <td className="px-6 py-4 flex gap-3">
+                                                    <button onClick={() => setEditingContact(contact)} className="text-blue-600 hover:text-blue-900"><FaEdit /></button>
+                                                    <button onClick={() => handleDelete(contact._id)} className="text-red-600 hover:text-red-900"><FaTrash /></button>
+                                                </td>
+                                            )}
+                                        </tr>
+                                    ))}
+                                    {filteredContacts.length === 0 && (
+                                        <tr>
+                                            <td colSpan={activeTab === 'active' ? 5 : 3} className="px-6 py-8 text-center text-gray-500">
+                                                No contacts found in {activeTab === 'active' ? 'Active' : 'History'}.
+                                            </td>
+                                        </tr>
+                                    )}
+                                </>
                             )}
                         </tbody>
                     </table>

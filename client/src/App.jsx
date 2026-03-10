@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider } from './context/AuthContext';
@@ -22,6 +22,20 @@ import Contact from './pages/Contact';
 import Guide from './pages/Guide';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import WhatsAppChat from './components/WhatsAppChat';
+
+// Only show WhatsApp widget on public pages (not on admin or dashboard)
+function ConditionalWhatsApp() {
+  const location = useLocation();
+  const isAppRoute = location.pathname.startsWith('/admin') || 
+                     location.pathname.startsWith('/dashboard-app') ||
+                     location.pathname.startsWith('/dashboard') ||
+                     location.pathname.startsWith('/contacts') ||
+                     location.pathname.startsWith('/send');
+                     
+  if (isAppRoute) return null;
+  return <WhatsAppChat />;
+}
 
 function App() {
   return (
@@ -60,6 +74,7 @@ function App() {
           <Route path="/send" element={<Navigate to="/dashboard-app/send" />} />
         </Routes>
         <ToastContainer position="top-right" autoClose={3000} />
+        <ConditionalWhatsApp />
       </AuthProvider>
     </Router>
   );

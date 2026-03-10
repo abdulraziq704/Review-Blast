@@ -175,9 +175,9 @@ const sendReviews = async (req, res) => {
         return res.status(400).json({ message: 'Please set your Review Link in settings first' });
     }
 
-    let query = { user: req.user.id };
+    let query = { user: req.user.id, status: 'pending' };
     if (Array.isArray(contactIds) && contactIds.length > 0) {
-        query._id = { $in: contactIds };
+        query = { _id: { $in: contactIds }, user: req.user.id };
     }
 
     const contacts = await Contact.find(query);
@@ -223,6 +223,29 @@ const sendReviews = async (req, res) => {
     res.json({ message: 'Batch processing complete', results });
 };
 
+const getContactStats = async (req, res) => {
+    try {
+        console.log(`📊 Fetching stats for user ID: ${req.user.id}`);
+        const totalContacts = await Contact.countDocuments({ user: req.user.id });
+        const pendingContacts = await Contact.countDocuments({ user: req.user.id, status: 'pending' });
+        const sentHistory = await Contact.countDocuments({ 
+            user: req.user.id, 
+            status: { $in: ['sent', 'delivered', 'read'] } 
+        });
+
+        console.log(`✅ Stats results - Total: ${totalContacts}, Pending: ${pendingContacts}, Sent: ${sentHistory}`);
+
+        res.json({
+            totalContacts,
+            pendingContacts,
+            sentHistory
+        });
+    } catch (error) {
+        console.error('❌ Error fetching stats:', error);
+        res.status(500).json({ message: 'Error fetching stats', error: error.message });
+    }
+};
+
 module.exports = {
     getContacts,
     addContact,
@@ -231,5 +254,6 @@ module.exports = {
     updateContact,
     deleteContact,
     bulkDeleteContacts,
+    getContactStats,
 };
 
