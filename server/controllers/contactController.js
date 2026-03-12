@@ -15,11 +15,14 @@ const getContacts = async (req, res) => {
 // @route   POST /api/contacts
 // @access  Private
 const addContact = async (req, res) => {
-    const { name, phone, email } = req.body;
+    let { name, phone, email } = req.body;
 
     if (!name || !phone) {
         return res.status(400).json({ message: 'Name and Phone are required' });
     }
+
+    // Clean phone number: Keep leading +, remove all other non-digits
+    phone = phone.toString().trim().replace(/(?!^\+)\D/g, '');
 
     try {
         const user = await User.findById(req.user.id);
@@ -60,7 +63,9 @@ const updateContact = async (req, res) => {
     const contact = await Contact.findById(req.params.id);
     if (contact && contact.user.toString() === req.user.id) {
         contact.name = req.body.name || contact.name;
-        contact.phone = req.body.phone || contact.phone;
+        if (req.body.phone) {
+            contact.phone = req.body.phone.toString().trim().replace(/(?!^\+)\D/g, '');
+        }
         const updated = await contact.save();
         res.json(updated);
     } else {
