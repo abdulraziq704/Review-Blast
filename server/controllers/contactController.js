@@ -192,9 +192,9 @@ const sendReviews = async (req, res) => {
     // Map template slugs to actual Content SIDs
     const templateMapping = {
         'Standard': process.env.CONTENT_SID_STANDARD || process.env.CONTENT_SID || 'HX639ada6892c39d611f0977a11aca6ea7',
-        'Friendly': process.env.CONTENT_SID_FRIENDLY,
-        'Incentive': process.env.CONTENT_SID_INCENTIVE,
-        'Direct': process.env.CONTENT_SID_DIRECT
+        'Friendly': process.env.CONTENT_SID_FRIENDLY || 'HX68682d93a0af084e541d09c4f0c35e35',
+        'Incentive': process.env.CONTENT_SID_INCENTIVE || 'HX9a1e9af3050bfb57a66ec7818fed5c4c',
+        'Direct': process.env.CONTENT_SID_DIRECT || 'HX67470a69bf8bc8c7e31f60fe376c8f0d'
     };
 
     // Inside your sendReviews controller
