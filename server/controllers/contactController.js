@@ -24,6 +24,13 @@ const addContact = async (req, res) => {
     // Clean phone number: Keep leading +, remove all other non-digits
     phone = phone.toString().trim().replace(/(?!^\+)\D/g, '');
 
+    // Convert 00 prefix to + or ensure leading +
+    if (phone.startsWith('00')) {
+        phone = '+' + phone.substring(2);
+    } else if (!phone.startsWith('+')) {
+        phone = '+' + phone;
+    }
+
     try {
         const user = await User.findById(req.user.id);
 
@@ -64,7 +71,13 @@ const updateContact = async (req, res) => {
     if (contact && contact.user.toString() === req.user.id) {
         contact.name = req.body.name || contact.name;
         if (req.body.phone) {
-            contact.phone = req.body.phone.toString().trim().replace(/(?!^\+)\D/g, '');
+            let cleanedPhone = req.body.phone.toString().trim().replace(/(?!^\+)\D/g, '');
+            if (cleanedPhone.startsWith('00')) {
+                cleanedPhone = '+' + cleanedPhone.substring(2);
+            } else if (!cleanedPhone.startsWith('+')) {
+                cleanedPhone = '+' + cleanedPhone;
+            }
+            contact.phone = cleanedPhone;
         }
         const updated = await contact.save();
         res.json(updated);
@@ -107,10 +120,19 @@ const uploadContacts = async (req, res) => {
             const name = row.name || row.Name || row['Full Name'] || row.fullname || row.NAME;
             const phone = row.phone || row.Phone || row['Phone Number'] || row.number || row.PHONE;
 
+            let cleanedPhone = phone ? phone.toString().trim().replace(/(?!^\+)\D/g, '') : null;
+            if (cleanedPhone) {
+                if (cleanedPhone.startsWith('00')) {
+                    cleanedPhone = '+' + cleanedPhone.substring(2);
+                } else if (!cleanedPhone.startsWith('+')) {
+                    cleanedPhone = '+' + cleanedPhone;
+                }
+            }
+
             return {
                 user: req.user.id,
                 name: name ? name.toString().trim() : null,
-                phone: phone ? phone.toString().trim().replace(/(?!^\+)\D/g, '') : null,
+                phone: cleanedPhone,
             };
         }).filter(c => c.name && c.phone);
 
