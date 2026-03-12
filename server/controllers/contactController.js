@@ -28,6 +28,15 @@ const addContact = async (req, res) => {
             return res.status(403).json({ message: 'Payment pending. Please complete payment to add contacts.' });
         }
 
+        const existingContact = await Contact.findOne({ user: req.user.id, phone });
+
+        if (existingContact) {
+            existingContact.name = name;
+            existingContact.status = 'pending';
+            await existingContact.save();
+            return res.status(200).json(existingContact);
+        }
+
         const contactCount = await Contact.countDocuments({ user: req.user.id });
         if (contactCount >= user.contactLimit) {
             return res.status(400).json({
@@ -43,9 +52,6 @@ const addContact = async (req, res) => {
         });
         res.status(201).json(contact);
     } catch (error) {
-        if (error.code === 11000) {
-            return res.status(400).json({ message: 'Contact with this phone already exists' });
-        }
         res.status(500).json({ message: error.message });
     }
 };
@@ -112,10 +118,19 @@ const uploadContacts = async (req, res) => {
             return res.status(400).json({ message: 'No valid contacts found or limit already reached.' });
         }
 
-        const result = await Contact.insertMany(contacts, { ordered: false });
+        const bulkOps = contacts.map(c => ({
+            updateOne: {
+                filter: { user: req.user.id, phone: c.phone },
+                update: { $set: { name: c.name, status: 'pending' } },
+                upsert: true
+            }
+        }));
+
+        const result = await Contact.bulkWrite(bulkOps);
+
         res.status(201).json({
-            message: `Uploaded ${result.length} contacts successfully.${result.length < parsedData.length ? ' Some contacts were skipped due to plan limits.' : ''}`,
-            count: result.length
+            message: `Processed ${contacts.length} contacts successfully.`,
+            count: result.upsertedCount + result.modifiedCount
         });
     } catch (error) {
         console.error('CSV Upload Error:', error);

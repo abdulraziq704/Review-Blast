@@ -37,7 +37,7 @@ const Contacts = () => {
 
     // Filter contacts based on tab
     const filteredContacts = contacts.filter(c => {
-        if (activeTab === 'history') return c.status !== 'pending';
+        if (activeTab === 'history') return ['sent', 'delivered', 'read'].includes(c.status);
         return c.status === 'pending';
     });
 
