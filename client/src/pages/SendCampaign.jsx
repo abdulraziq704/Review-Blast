@@ -11,6 +11,26 @@ const SendCampaign = () => {
     const [loadingStats, setLoadingStats] = useState(true);
     const [sending, setSending] = useState(false);
     const [results, setResults] = useState(null);
+    const [selectedTemplate, setSelectedTemplate] = useState('Standard');
+
+    const templates = {
+        'Standard': {
+            slug: 'Standard',
+            text: (name, business) => <>Hello <strong>{name || '[Customer Name]'}</strong>,<br /><br />Thank you for choosing <strong>{business || '[Business Name]'}</strong>. We truly appreciate your visit and hope you had a great experience with us.<br /><br />If you have a moment, we would love to hear your thoughts. Your feedback helps us improve and helps others make better choices.<br /><br />Please share your review here:</>
+        },
+        'Friendly': {
+            slug: 'Friendly',
+            text: (name, business) => <>Hi <strong>{name || '[Customer Name]'}</strong>! 👋<br /><br />We hope you enjoyed your time at <strong>{business || '[Business Name]'}</strong>. It was a pleasure having you!<br /><br />If you loved our service, would you mind leaving us a quick review? It means the world to us!<br /><br />Link below:</>
+        },
+        'Incentive': {
+            slug: 'Incentive',
+            text: (name, business) => <>Hello <strong>{name || '[Customer Name]'}</strong>,<br /><br />Thank you for visiting <strong>{business || '[Business Name]'}</strong>! 🌟<br /><br />We're constantly striving to improve. Could you share your feedback with us? As a thank you, show this review on your next visit for a surprise!<br /><br />Review here:</>
+        },
+        'Direct': {
+            slug: 'Direct',
+            text: (name, business) => <>Hello <strong>{name || '[Customer Name]'}</strong>, Thank you for your recent visit to <strong>{business || '[Business Name]'}</strong>.<br /><br />Your service record is now updated.<br /><br />You can view your details and provide feedback here: </>
+        }
+    };
 
     useEffect(() => {
         fetchStats();
@@ -39,7 +59,10 @@ const SendCampaign = () => {
 
         setSending(true);
         try {
-            const { data } = await api.post('/contacts/send-reviews', { contactIds: [] });
+            const { data } = await api.post('/contacts/send-reviews', { 
+                contactIds: [], 
+                messageTemplate: templates[selectedTemplate].slug 
+            });
             setResults(data.results);
             toast.success('Campaign started! Processing in background.');
             fetchStats();
@@ -74,10 +97,8 @@ const SendCampaign = () => {
                                 <div className="relative bg-white rounded-xl rounded-tl-none p-3 shadow-sm max-w-[95%] self-start mt-2 ml-1">
                                     <div className="absolute top-0 -left-[8px] w-0 h-0 border-t-[10px] border-t-white border-l-[10px] border-l-transparent"></div>
                                     <div className="text-[13px] text-gray-800 leading-snug">
-                                        Hello [Customer Name],<br /><br />
-                                        Thank you for choosing <strong>{user?.businessName}</strong>. We truly appreciate your visit and hope you had a great experience with us.<br /><br />
-                                        If you have a moment, we would love to hear your thoughts. Your feedback helps us improve and helps others make better choices.<br /><br />
-                                        Please share your review here:<br />
+                                        {templates[selectedTemplate].text(null, user?.businessName)}
+                                        <br /><br />
                                         <a href={user?.reviewLink} className="text-blue-500 break-all">{user?.reviewLink}</a><br /><br />
                                         Thank you again for your time and support!
                                     </div>
@@ -128,6 +149,29 @@ const SendCampaign = () => {
                                         <span className="text-gray-600">Review Link:</span>
                                         <span className="text-blue-600 truncate max-w-full sm:max-w-[200px] text-xs underline font-medium">{user?.reviewLink || 'Not Set'}</span>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div className="mb-6">
+                                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Select Message Template</h3>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {Object.keys(templates).map((tempName) => (
+                                        <button
+                                            key={tempName}
+                                            onClick={() => setSelectedTemplate(tempName)}
+                                            className={`p-3 rounded-xl border-2 text-left transition-all ${selectedTemplate === tempName
+                                                ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-200'
+                                                : 'border-gray-100 bg-white hover:border-indigo-300'
+                                                }`}
+                                        >
+                                            <div className={`text-xs font-bold mb-1 ${selectedTemplate === tempName ? 'text-indigo-600' : 'text-gray-600'}`}>
+                                                {tempName}
+                                            </div>
+                                            <div className="text-[10px] text-gray-400 line-clamp-2 leading-tight">
+                                                {templates[tempName].slug} Message Template
+                                            </div>
+                                        </button>
+                                    ))}
                                 </div>
                             </div>
 

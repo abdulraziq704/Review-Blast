@@ -189,6 +189,14 @@ const sendReviews = async (req, res) => {
     // Iterate and send (Batching logic is simplified here)
     const results = [];
 
+    // Map template slugs to actual Content SIDs
+    const templateMapping = {
+        'Standard': process.env.CONTENT_SID_STANDARD || process.env.CONTENT_SID || 'HX639ada6892c39d611f0977a11aca6ea7',
+        'Friendly': process.env.CONTENT_SID_FRIENDLY,
+        'Incentive': process.env.CONTENT_SID_INCENTIVE,
+        'Direct': process.env.CONTENT_SID_DIRECT
+    };
+
     // Inside your sendReviews controller
     for (const contact of contacts) {
         // 1. Prepare variables for your specific template:
@@ -200,11 +208,13 @@ const sendReviews = async (req, res) => {
         };
 
         // 2. Call the updated helper using Content SID
-        // Replace 'HX...' with the SID from your approved 'our_review_utility' template
+        // Resolve slug to actual SID or fallback
+        const templateId = templateMapping[messageTemplate] || messageTemplate || templateMapping['Standard'];
+        
         const response = await sendWhatsAppMessage(
             contact.phone,
             templateVariables,
-            'HX67470a69bf8bc8c7e31f60fe376c8f0d' // From image_e4c006.png
+            templateId
         );
 
         if (response.success) {

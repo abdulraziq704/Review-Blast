@@ -15,36 +15,6 @@ const About = () => {
                     </p>
                 </div>
 
-                <div className="mt-20">
-                    <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 items-center">
-                        <div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-6">Why ReviewBlast?</h3>
-                            <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                                In today's market, 93% of consumers say online reviews impact their purchasing decisions. Yet, getting customers to leave reviews can be a manual, time-consuming struggle.
-                            </p>
-                            <p className="text-gray-600 text-lg leading-relaxed">
-                                We've built a bridge between your business and your satisfied customers. By leveraging the power of WhatsApp, we ensure your review requests get seen and acted upon, helping you build a wall of social proof that converts visitors into loyal clients.
-                            </p>
-                        </div>
-                        <div className="bg-indigo-600 rounded-3xl p-12 text-white">
-                            <h4 className="text-xl font-bold mb-4">Our Values</h4>
-                            <ul className="space-y-4">
-                                <li className="flex items-start">
-                                    <span className="bg-white/20 p-1 rounded-md mr-3 text-sm">✓</span>
-                                    <span>Transparency in all customer interactions</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="bg-white/20 p-1 rounded-md mr-3 text-sm">✓</span>
-                                    <span>Data privacy and security as a priority</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <span className="bg-white/20 p-1 rounded-md mr-3 text-sm">✓</span>
-                                    <span>Simplicity and ease of use for busy owners</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
 
                 <WhyReviewsMatter />
 
