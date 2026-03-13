@@ -13,8 +13,7 @@ const Pricing = () => {
 
 
             <PricingSection />
-
-            <WhyReviewsMatter />
+ 
 
             <ReviewSlider />
         </div>

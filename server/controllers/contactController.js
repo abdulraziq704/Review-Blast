@@ -117,8 +117,32 @@ const uploadContacts = async (req, res) => {
         }
 
         let contacts = parsedData.map((row) => {
-            const name = row.name || row.Name || row['Full Name'] || row.fullname || row.NAME;
-            const phone = row.phone || row.Phone || row['Phone Number'] || row.number || row.PHONE;
+            // Trim all keys to handle accidental spaces in headers
+            const cleanRow = {};
+            Object.keys(row).forEach(key => {
+                cleanRow[key.trim()] = row[key];
+            });
+
+            // Smart Header Mapping
+            const nameKeys = ['name', 'fullname', 'full name', 'customer', 'contact name', 'contact', 'user'];
+            const phoneKeys = ['phone', 'phone number', 'number', 'mobile', 'whatsapp', 'wa', 'cell'];
+
+            let name = null;
+            let phone = null;
+
+            // 1. Try to find by specific keywords
+            for (const key of Object.keys(cleanRow)) {
+                const lowerKey = key.toLowerCase();
+                if (!name && nameKeys.includes(lowerKey)) name = cleanRow[key];
+                if (!phone && phoneKeys.includes(lowerKey)) phone = cleanRow[key];
+            }
+
+            // 2. Fallback: If not found but we have at least 2 columns, assume 1st is Name, 2nd is Phone
+            if ((!name || !phone) && Object.keys(cleanRow).length >= 2) {
+                const values = Object.values(cleanRow);
+                if (!name) name = values[0];
+                if (!phone) phone = values[1];
+            }
 
             let cleanedPhone = phone ? phone.toString().trim().replace(/(?!^\+)\D/g, '') : null;
             if (cleanedPhone) {
@@ -200,15 +224,13 @@ const bulkDeleteContacts = async (req, res) => {
     }
 };
 
-// @desc    Send Review Requests
+// @desc    Send Review Requests (Optimized for Bulk)
 // @route   POST /api/contacts/send-reviews
 // @access  Private
 const sendReviews = async (req, res) => {
-    const { contactIds, messageTemplate } = req.body; // Expect array of IDs or 'all'
+    const { contactIds, messageTemplate } = req.body;
 
-    // Get User for Business Name and Link
     const user = await User.findById(req.user.id);
-
     if (user.paymentStatus !== 'done') {
         return res.status(403).json({ message: 'Payment pending. Please complete payment to send messages.' });
     }
@@ -225,54 +247,62 @@ const sendReviews = async (req, res) => {
     const contacts = await Contact.find(query);
 
     if (contacts.length === 0) {
-        return res.status(400).json({ message: 'No contacts selected' });
+        return res.status(400).json({ message: 'No pending contacts selected' });
     }
 
-    // Iterate and send (Batching logic is simplified here)
-    const results = [];
+    // Immediately respond to the client so the UI doesn't hang
+    res.json({ 
+        message: 'Campaign processing started in the background', 
+        total: contacts.length 
+    });
 
-    // Map template slugs to actual Content SIDs
-    const templateMapping = {
-        'Standard': process.env.CONTENT_SID_STANDARD || process.env.CONTENT_SID || 'HX639ada6892c39d611f0977a11aca6ea7',
-        'Friendly': process.env.CONTENT_SID_FRIENDLY || 'HX68682d93a0af084e541d09c4f0c35e35',
-        'Incentive': process.env.CONTENT_SID_INCENTIVE || 'HX9a1e9af3050bfb57a66ec7818fed5c4c',
-        'Direct': process.env.CONTENT_SID_DIRECT || 'HX67470a69bf8bc8c7e31f60fe376c8f0d'
-    };
-
-    // Inside your sendReviews controller
-    for (const contact of contacts) {
-        // 1. Prepare variables for your specific template:
-        // {{1}} = Contact Name, {{2}} = Business Name, {{3}} = Review Link
-        const templateVariables = {
-            1: contact.name,
-            2: user.businessName,
-            3: user.reviewLink
+    // Background Execution Loop
+    (async () => {
+        console.log(`🚀 Starting background campaign for ${user.businessName} (${contacts.length} contacts)`);
+        
+        const templateMapping = {
+            'Standard': process.env.CONTENT_SID_STANDARD || process.env.CONTENT_SID || 'HX639ada6892c39d611f0977a11aca6ea7',
+            'Friendly': process.env.CONTENT_SID_FRIENDLY || 'HX68682d93a0af084e541d09c4f0c35e35',
+            'Incentive': process.env.CONTENT_SID_INCENTIVE || 'HX9a1e9af3050bfb57a66ec7818fed5c4c',
+            'Direct': process.env.CONTENT_SID_DIRECT || 'HX67470a69bf8bc8c7e31f60fe376c8f0d'
         };
 
-        // 2. Call the updated helper using Content SID
-        // Resolve slug to actual SID or fallback
         const templateId = templateMapping[messageTemplate] || messageTemplate || templateMapping['Standard'];
-        
-        const response = await sendWhatsAppMessage(
-            contact.phone,
-            templateVariables,
-            templateId
-        );
 
-        if (response.success) {
-            contact.status = 'sent';
-            contact.lastMessageSid = response.sid; // Store the SID for tracking
-            contact.lastSentAt = Date.now();
-            await contact.save();
-            results.push({ phone: contact.phone, status: 'sent', sid: response.sid });
-        } else {
-            contact.status = 'failed';
-            await contact.save();
-            results.push({ phone: contact.phone, status: 'failed', error: response.error });
+        for (let i = 0; i < contacts.length; i++) {
+            const contact = contacts[i];
+            
+            // Pacing: Add 1-second delay between messages (respect Twilio WhatsApp limits)
+            if (i > 0) await new Promise(resolve => setTimeout(resolve, 1000));
+
+            const templateVariables = {
+                1: contact.name,
+                2: user.businessName,
+                3: user.reviewLink
+            };
+
+            const response = await sendWhatsAppMessage(
+                contact.phone,
+                templateVariables,
+                templateId
+            );
+
+            if (response.success) {
+                contact.status = 'sent';
+                contact.lastMessageSid = response.sid;
+                contact.lastSentAt = Date.now();
+                await contact.save();
+                console.log(`[${i+1}/${contacts.length}] ✅ Sent to ${contact.phone}`);
+            } else {
+                contact.status = 'failed';
+                await contact.save();
+                console.log(`[${i+1}/${contacts.length}] ❌ Failed for ${contact.phone}: ${response.error}`);
+            }
         }
-    }
-
-    res.json({ message: 'Batch processing complete', results });
+        console.log(`🏁 Campaign completed for ${user.businessName}`);
+    })().catch(err => {
+        console.error('🔥 Background Campaign Fatal Error:', err);
+    });
 };
 
 const getContactStats = async (req, res) => {

@@ -39,6 +39,11 @@ const userSchema = mongoose.Schema({
         type: Number,
         default: 300,
     },
+    currency: {
+        type: String,
+        enum: ['PKR', 'USD'],
+        default: 'PKR',
+    },
     paymentStatus: {
         type: String,
         enum: ['pending', 'done'],

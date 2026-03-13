@@ -141,7 +141,12 @@ const AdminDashboard = () => {
                                             <td className="px-6 py-6">
                                                 <div className="font-bold text-gray-900">{u.name}</div>
                                                 <div className="text-gray-500 text-sm">{u.email}</div>
-                                                <div className="text-indigo-600 text-xs font-bold mt-1 uppercase tracking-tighter">{u.businessName || 'No Business Name'}</div>
+                                                <div className="text-indigo-600 text-xs font-bold mt-1 uppercase tracking-tighter flex items-center gap-2">
+                                                    {u.businessName || 'No Business Name'}
+                                                    <span className={`px-2 py-0.5 rounded-md text-[8px] font-black tracking-widest ${u.currency === 'USD' ? 'bg-indigo-600 text-white' : 'bg-emerald-500 text-white'}`}>
+                                                        {u.currency === 'USD' ? 'INTERNATIONAL' : 'LOCAL'}
+                                                    </span>
+                                                </div>
                                             </td>
                                             <td className="px-6 py-6 font-medium">
                                                 <div className="flex flex-col gap-1">

@@ -19,7 +19,7 @@ const generateToken = (id) => {
 // @access  Public
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, businessName, whatsappNumber, plan } = req.body;
+        const { name, email, password, businessName, whatsappNumber, plan, currency } = req.body;
 
         if (!name || !email || !password || !businessName) {
             return res.status(400).json({ message: 'Please add all fields' });
@@ -46,6 +46,7 @@ const registerUser = async (req, res) => {
             plan: planInfo.name,
             contactLimit: planInfo.contactLimit,
             billingCycle: req.body.billingCycle || 'monthly',
+            currency: currency || 'PKR',
             paymentStatus: 'pending' // Always pending on registration
         });
 

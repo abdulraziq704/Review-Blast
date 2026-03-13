@@ -9,6 +9,7 @@ const Register = () => {
     const params = new URLSearchParams(location.search);
     const initialPlan = params.get('plan') || 'startup';
     const initialCycle = params.get('cycle') || 'monthly';
+    const initialCurrency = params.get('currency') || 'PKR';
 
     const [formData, setFormData] = useState({
         name: '',
@@ -18,11 +19,33 @@ const Register = () => {
         plan: initialPlan,
     });
     const [billingCycle, setBillingCycle] = useState(initialCycle);
+    const [currency, setCurrency] = useState(initialCurrency);
 
     const plans = [
-        { id: 'startup', name: 'Startup', monthlyPrice: 1500, yearlyPrice: 15000, contacts: 300, color: 'indigo' },
-        { id: 'growth', name: 'Growth', monthlyPrice: 2500, yearlyPrice: 25000, contacts: 500, color: 'green' },
-        { id: 'business', name: 'Business', monthlyPrice: 4500, yearlyPrice: 45000, contacts: 1000, color: 'purple' },
+        {
+            id: 'startup',
+            name: 'Startup',
+            monthlyPrice: currency === 'PKR' ? 1500 : 15,
+            yearlyPrice: currency === 'PKR' ? 15000 : 150,
+            contacts: 300,
+            color: 'indigo'
+        },
+        {
+            id: 'growth',
+            name: 'Growth',
+            monthlyPrice: currency === 'PKR' ? 2500 : 25,
+            yearlyPrice: currency === 'PKR' ? 25000 : 250,
+            contacts: 500,
+            color: 'green'
+        },
+        {
+            id: 'business',
+            name: 'Business',
+            monthlyPrice: currency === 'PKR' ? 4500 : 35,
+            yearlyPrice: currency === 'PKR' ? 45000 : 350,
+            contacts: 1000,
+            color: 'purple'
+        },
     ];
 
     const handleChange = (e) => {
@@ -35,7 +58,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const success = await register({ ...formData, billingCycle });
+        const success = await register({ ...formData, billingCycle, currency });
         if (success) {
             navigate('/dashboard');
         }
@@ -120,6 +143,10 @@ const Register = () => {
                             >
                                 Yearly
                             </button>
+                            {/* Currency Indicator */}
+                            <div className="ml-auto flex items-center gap-2 px-3">
+                                <span className="text-[10px] font-black text-indigo-600 uppercase tracking-widest">{currency}</span>
+                            </div>
                         </div>
 
                         <div className="space-y-3">
@@ -138,7 +165,7 @@ const Register = () => {
                                                 {plan.name}
                                             </p>
                                             <h4 className="text-xl font-bold text-gray-900 font-outfit">
-                                                PKR {billingCycle === 'monthly' ? plan.monthlyPrice.toLocaleString() : plan.yearlyPrice.toLocaleString()}
+                                                {currency === 'PKR' ? 'PKR ' : '$'}{billingCycle === 'monthly' ? plan.monthlyPrice.toLocaleString() : plan.yearlyPrice.toLocaleString()}
                                                 <span className="text-xs text-gray-400 font-medium lowercase"> / {billingCycle === 'monthly' ? 'mo' : 'yr'}</span>
                                             </h4>
                                             <p className="text-xs text-gray-500">{plan.contacts} contacts included</p>
